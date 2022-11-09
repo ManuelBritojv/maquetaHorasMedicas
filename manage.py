@@ -5,7 +5,8 @@ import sys
 
 
 def main():
-    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'gestor_horas_medicas.settings')
+    os.environ.setdefault('DJANGO_SETTINGS_MODULE',
+                          'gestor_horas_medicas.settings')
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:

@@ -17,8 +17,9 @@ git clone https://github.com/eduardocalabrano/reserva_horas_medicas.git
 
 3. Crear un entorno virtual dentro del proyecto clonado y ejecutarlo
 ```
-python -m venv nombre_entorno
-nombre_entorno\Scripts\activate
+pip install virtualenv
+python -m virtualenv env
+env\Scripts\activate
 ```
 
 4. Instalar todo lo indicado en el archivo requirements
