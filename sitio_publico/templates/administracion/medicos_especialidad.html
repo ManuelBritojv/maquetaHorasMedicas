@@ -1,0 +1,123 @@
+{% extends 'administracion/base.html' %}
+{% load static %}
+{% block content %}
+<div class="row justify-content-center" id="div_logo">
+  <img src="{% static 'clinica_miskatonic_logo.png' %}" alt="">
+</div>
+<div class="row justify-content-center">
+
+    <h4>{{especialidad}}</h4>
+</div>
+<div class="row">
+    {% for medicos_filtrados in medicos %}
+    <div class="card tarjeta_medico" style="width: 14rem;">
+        <img src="{{ medicos_filtrados.foto_perfil.url }}" class="card-img-top" alt="...">
+        <!-- <img src="" class="card-img-top" alt=""> -->
+        <div class="card-body">
+          <h5 class="card-title" id="card_title_med_{{medicos_filtrados.id}}">
+          {% if medicos_filtrados.genero == 'F' %}
+            Dra.
+          {% else %}
+            Dr.
+          {% endif %}
+          {{medicos_filtrados.nombre}} {{medicos_filtrados.apellidos}}</h5>
+          <p class="card-text">{{medicos_filtrados.especialidad}}</p>
+          <a href="#" data-med="{{medicos_filtrados.id}}" class="btn btn-primary solhora" data-toggle="modal" data-target="#staticBackdrop" id="but_reserva_med_{{medicos_filtrados.id}}">Solicitar hora</a>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+<div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">Reserva de Hora - <span id="span_medico"> - </span></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="cierre_modal">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <h4>Agenda Disponible</h4>
+          <div class="form-group">
+            <label for="select_fecha_medico">Fecha:</label>
+             <select class="form-control dato_paciente" id="select_fecha_medico">
+               <option selected="selected" value="0" disabled>Seleccione Fecha</option>
+             </select>
+             <small id="alerta_select_fecha" class="form-text text-danger alerta_formulario_reserva">Es necesario que escoja una fecha de consulta</small>
+          </div>
+          <div class="form-group">
+            <label for="select_hora_medico">Hora:</label>
+             <select class="form-control dato_paciente" id="select_hora_medico">
+               <option value="0" selected disabled>-- : --</option>
+             </select>
+             <small id="alerta_select_hora" class="form-text text-danger alerta_formulario_reserva">Es necesario que escoja un horario de consulta</small>
+          </div>
+          <hr>
+          <h4>Datos Paciente</h4>
+          <div class="form-group">
+            <label for="rut_paciente">RUT</label>
+            <input type="text" class="form-control dato_paciente" placeholder="N° de RUT" id="rut_paciente">
+            <small id="alerta_rut" class="form-text text-danger alerta_formulario_reserva">Ingrese un rut válido</small>
+          </div>
+          <div class="form-group">
+            <label for="nombre_paciente">Nombre</label>
+            <input type="text" class="form-control dato_paciente" placeholder="Su nombre" id="nombre_paciente">
+            <small id="alerta_nombre" class="form-text text-danger alerta_formulario_reserva">Ingrese su nombre</small>
+          </div>
+          <div class="form-group">
+            <label for="apellidos_paciente">Apellidos</label>
+            <input type="text" class="form-control dato_paciente" placeholder="Apellidos" id="apellidos_paciente">
+            <small id="alerta_apellidos" class="form-text text-danger alerta_formulario_reserva">Ingrese al menos un apellido</small>
+          </div>
+          <div class="form-group">
+            <label for="telefono_paciente">Teléfono</label>
+            <input type="text" class="form-control dato_paciente" placeholder="N° telefonico" id="telefono_paciente">
+            <small id="alerta_telefono" class="form-text text-danger alerta_formulario_reserva">Ingrese su número de teléfono</small>
+          </div>
+          <div class="form-group">
+            <label for="email_paciente">Email</label>
+            <input type="email" class="form-control dato_paciente" placeholder="email@dominio.com" id="email_paciente">
+            <small id="alerta_email" class="form-text text-danger alerta_formulario_reserva">Ingrese su dirección de email</small>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer" id="footer_botones">
+        <button type="button" class="btn btn-secondary btn_modal" data-dismiss="modal" id="cancelar_modal">Cancelar</button>
+        <button type="button" class="btn btn-primary bot_confirma_reserva btn_modal">Confirmar Reserva</button>
+      </div>
+      <div class="modal-footer" id="footer_respuesta_ok">
+        <div class="alert alert-success" role="alert">
+          <h5 class="alert-heading">Reserva exitosa</h5>
+          <p>La hora médica a sido reservada exitosamente. Recibirá mas detalles en su dirección de email.</p>
+          <hr>
+          <button type="button" class="btn btn-success btn_cierre_modal" data-dismiss="modal">Cerrar</button>
+        </div>
+      </div>
+      <div class="modal-footer" id="footer_respuesta_error">
+        <div class="alert alert-danger" role="alert">
+          <h5 class="alert-heading">¡Error!</h5>
+          <p>Algo salió mal y su reserva no se concretó exitosamente. Por favor intente más tarde</p>
+          <hr>
+          <button type="button" class="btn btn-danger btn_cierre_modal" data-dismiss="modal">Cerrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+
+
+{% block titulo %}
+    Mi Clinica - Profesionales
+{% endblock %}
+
+{% block carga_css %}
+    <link rel="stylesheet" href="{% static 'css/medicos.css' %}">
+{% endblock %}
+
+{% block carga_js %}
+<script src="{% static 'js/eventos_listado_especialidad.js' %}"></script>
+<script src="{% static 'js/validar_datos_form_reserva.js' %}"></script>
+{% endblock %}
